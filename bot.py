@@ -71,7 +71,7 @@ def parse_3dnews(ferst_start):
         except:
             continue
         if ferst_start:
-            if link_news not in headers_3dnews:
+            if link_news not in headers_3dnews and data_news.tm_mday == time.gmtime(tmp_time).tm_mday:
                 headers_3dnews.append(text_news)
         else:
             if text_news not in headers_3dnews:
@@ -114,7 +114,7 @@ def parse_4pda(ferst_start):
         except:
             continue
         if ferst_start:
-            if data_news.tm_mday == time.gmtime(tmp_time).tm_mday:
+            if text_news not in headers_4pda and data_news.tm_mday == time.gmtime(tmp_time).tm_mday:
                 headers_4pda.append(text_news)
         else:
             if text_news not in headers_4pda:
@@ -159,7 +159,7 @@ def parse_xaker(ferst_start):
             if text_news not in headers_xaker:
                 headers_xaker.append(text_news)
         else:
-            if text_news not in headers_xaker:
+            if text_news not in headers_xaker and data_news.tm_mday == time.gmtime(tmp_time).tm_mday:
                 if data_news.tm_mday == time.gmtime(tmp_time).tm_mday:
                     try:
                         search_duplicates(text_news)
@@ -194,9 +194,10 @@ def start(flag, ferst_star):
 ferst_star = start(True, True)
 while True:
 #    print('++++')
-    if len(headers_3dnews) >= 300:
-        print('[DEBUG] Len headers > 300, clear')
-        send_teleg_bot('[DEBUG] Len headers > 300, clear')
+    if len(headers_3dnews) >= 50:
+        tmp = str(len(headers_3dnews))
+        print(f'[DEBUG] Len headers > {tmp}, clear')
+        send_teleg_bot(f'[DEBUG] Len headers > {tmp}, clear')
         headers_3dnews = []
         headers_4pda = []
         headers_xaker = []
