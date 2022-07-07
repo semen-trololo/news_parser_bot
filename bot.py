@@ -203,7 +203,7 @@ while True:
         headers_xaker = []
         tmp = str(len(headers_3dnews))
         send_teleg_bot(f'[DEBUG] Len->{tmp}')
-        ferst_star = start(False, ferst_star)
+        ferst_star = start(False, True)
     parse_3dnews(ferst_star)
     parse_4pda(ferst_star)
     parse_xaker(ferst_star)
