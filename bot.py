@@ -15,7 +15,10 @@ bot = telebot.TeleBot('')
 
 
 def send_teleg_bot(message):
-    bot.send_message(chat_id='@', text=message)
+    try:
+        bot.send_message(chat_id='@', text=message)
+    except:
+        print('[DEBUG] Error send message in telegram')
 
 
 def similarity(s1, s2):
@@ -80,12 +83,8 @@ def parse_3dnews(ferst_start):
                         search_duplicates(text_news)
                     except:
                         send_teleg_bot('[DEBUG] Error duplicates')
-                    try:
-                        send_teleg_bot(link_news)
-                        headers_3dnews.append(text_news)
-                    except:
-                        print('[DEBUG] Error send in telegram')
-    #print(headers_3dnews)
+                    send_teleg_bot(link_news)
+                    headers_3dnews.append(text_news)
     return True
 
 
@@ -123,12 +122,8 @@ def parse_4pda(ferst_start):
                         search_duplicates(text_news)
                     except:
                         send_teleg_bot('[DEBUG] Error duplicates')
-                    try:
-                        send_teleg_bot(link_news)
-                        headers_4pda.append(text_news)
-                    except:
-                        print('[DEBUG] Error send in telegram')
-    #print(headers_4pda)
+                    send_teleg_bot(link_news)
+                    headers_4pda.append(text_news)
     return True
 
 
@@ -165,12 +160,8 @@ def parse_xaker(ferst_start):
                         search_duplicates(text_news)
                     except:
                         send_teleg_bot('[DEBUG] Error duplicates')
-                    try:
-                        send_teleg_bot(link_news)
-                        headers_xaker.append(text_news)
-                    except:
-                        print('[DEBUG] Error send in telegram')
-
+                    send_teleg_bot(link_news)
+                    headers_xaker.append(text_news)
     return True
 
 
@@ -193,7 +184,6 @@ def start(flag, ferst_star):
 
 ferst_star = start(True, True)
 while True:
-#    print('++++')
     if len(headers_3dnews) >= 50:
         tmp = str(len(headers_3dnews))
         print(f'[DEBUG] Len headers > {tmp}, clear')
