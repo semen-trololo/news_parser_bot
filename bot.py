@@ -31,18 +31,18 @@ def similarity(s1, s2):
 def search_duplicates(text_news):
     for tmp in headers_3dnews:
         value = similarity(text_news, tmp)
-        if value > 0.55:
-            send_teleg_bot('[DEBUG]Возможно вы это уже видели :) \n[DEBUG]' + str(value) + '\n [DEBUG]' + str(tmp) + '\n' + '[DEBUG]' + str(text_news) + '\n')
+        if value > 0.60:
+            #send_teleg_bot('[DEBUG]Возможно вы это уже видели :) \n[DEBUG]' + str(value) + '\n [DEBUG]' + str(tmp) + '\n' + '[DEBUG]' + str(text_news) + '\n')
             return True
     for tmp in headers_4pda:
         value = similarity(text_news, tmp)
-        if value > 0.55:
-            send_teleg_bot('[DEBUG]Возможно вы это уже видели :) \n[DEBUG]' + str(value) + '\n [DEBUG]' + str(tmp) + '\n' + '[DEBUG]' + str(text_news) + '\n')
+        if value > 0.60:
+            #send_teleg_bot('[DEBUG]Возможно вы это уже видели :) \n[DEBUG]' + str(value) + '\n [DEBUG]' + str(tmp) + '\n' + '[DEBUG]' + str(text_news) + '\n')
             return True
     for tmp in headers_xaker:
         value = similarity(text_news, tmp)
-        if value > 0.55:
-            send_teleg_bot('[DEBUG]Возможно вы это уже видели :) \n[DEBUG]' + str(value) + '\n [DEBUG]' + str(tmp) + '\n' + '[DEBUG]' + str(text_news) + '\n')
+        if value > 0.60:
+            #send_teleg_bot('[DEBUG]Возможно вы это уже видели :) \n[DEBUG]' + str(value) + '\n [DEBUG]' + str(tmp) + '\n' + '[DEBUG]' + str(text_news) + '\n')
             return True
     return False
 
@@ -80,11 +80,15 @@ def parse_3dnews(ferst_start):
             if text_news not in headers_3dnews:
                 if data_news.tm_mday == time.gmtime(tmp_time).tm_mday:
                     try:
-                        search_duplicates(text_news)
+                        flag_ss = search_duplicates(text_news)
                     except:
                         send_teleg_bot('[DEBUG] Error duplicates')
-                    send_teleg_bot(link_news)
-                    headers_3dnews.append(text_news)
+                        flag_ss = False
+                    if flag_ss:
+                        headers_3dnews.append(text_news)
+                    else:
+                        send_teleg_bot(link_news)
+                        headers_3dnews.append(text_news)
     return True
 
 
@@ -119,11 +123,15 @@ def parse_4pda(ferst_start):
             if text_news not in headers_4pda:
                 if data_news.tm_mday == time.gmtime(tmp_time).tm_mday:
                     try:
-                        search_duplicates(text_news)
+                        flag_ss = search_duplicates(text_news)
                     except:
                         send_teleg_bot('[DEBUG] Error duplicates')
-                    send_teleg_bot(link_news)
-                    headers_4pda.append(text_news)
+                        flag_ss = False
+                    if flag_ss:
+                        headers_4pda.append(text_news)
+                    else:
+                        send_teleg_bot(link_news)
+                        headers_4pda.append(text_news)
     return True
 
 
@@ -157,11 +165,15 @@ def parse_xaker(ferst_start):
             if text_news not in headers_xaker and data_news.tm_mday == time.gmtime(tmp_time).tm_mday:
                 if data_news.tm_mday == time.gmtime(tmp_time).tm_mday:
                     try:
-                        search_duplicates(text_news)
+                        flag_ss = search_duplicates(text_news)
                     except:
+                        flag_ss = False
                         send_teleg_bot('[DEBUG] Error duplicates')
-                    send_teleg_bot(link_news)
-                    headers_xaker.append(text_news)
+                    if flag_ss:
+                        headers_xaker.append(text_news)
+                    else:
+                        send_teleg_bot(link_news)
+                        headers_xaker.append(text_news)
     return True
 
 
@@ -173,7 +185,6 @@ def start(flag, ferst_star):
                     ferst_star = False
                     if flag:
                         send_teleg_bot('Start parser bot.')
-#                       print('Start')
                     break
         headers_3dnews = []
         headers_4pda = []
@@ -184,7 +195,7 @@ def start(flag, ferst_star):
 
 ferst_star = start(True, True)
 while True:
-    if len(headers_3dnews) >= 50:
+    if len(headers_3dnews) >= 300 or len(headers_4pda) >= 300:
         tmp = str(len(headers_3dnews))
         print(f'[DEBUG] Len headers > {tmp}, clear')
         send_teleg_bot(f'[DEBUG] Len headers > {tmp}, clear')
